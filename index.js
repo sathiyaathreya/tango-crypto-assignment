@@ -10,12 +10,14 @@ app.use(express.urlencoded({
 
 app.post('/encrypt', (req, res, next) => {
     const { text, secretKey } = req.body
+    if (text != "" && !text) return res.status(400).json({message: 'Text parameter is Mandatory!'})
     const encrypted = CryptoJS.AES.encrypt(text, secretKey)
-    res.json({ encryptedValue: encrypted.toString() })
+    res.status(200).json({ encryptedValue: encrypted.toString() })
 })
 
 app.post('/decrypt', (req, res, next) => {
     const { text, secretKey } = req.body
+    if (text != "" && !text) return res.status(400).json({message: 'Text parameter is Mandatory!'})
     const decryptedText = CryptoJS.AES.decrypt(text, secretKey);
     res.send({ decryptedValue: decryptedText.toString(CryptoJS.enc.Utf8) })
 })
